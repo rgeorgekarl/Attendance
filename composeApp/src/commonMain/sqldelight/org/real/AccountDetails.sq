@@ -1,0 +1,36 @@
+CREATE TABLE AccountDetails (
+    id TEXT PRIMARY KEY,
+    givenId INTEGER ,
+    firstName TEXT,
+    middleName TEXT,
+    lastName TEXT ,
+    nickName TEXT ,
+    bio TEXT ,
+    birth TEXT,
+    age INTEGER ,
+    school TEXT ,
+    schoolYear INTEGER ,
+    course TEXT ,
+    contactNumber INTEGER,
+    address TEXT,
+    email TEXT,
+    icon TEXT
+);
+
+-- get account details
+getAccountDetailsByGivenId:
+SELECT * FROM AccountDetails WHERE id = ?;
+
+getAccountDetails:
+SELECT * FROM AccountDetails;
+
+-- insert or replace
+insertOrReplace:
+INSERT OR REPLACE INTO
+ AccountDetails (id, givenId, firstName, middleName, lastName, nickName, bio, birth, age, school, schoolYear, course, contactNumber, address, email, icon)
+VALUES
+(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+-- delete account details
+deleteAccount:
+DELETE FROM AccountDetails;
