@@ -25,6 +25,8 @@ import androidx.compose.ui.window.Dialog
 import kotlinx.coroutines.Delay
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import moe.tlaster.precompose.viewmodel.viewModel
+import org.real.AppDatabase
 import uiwithlogic.auth.model.AuthType
 import uiwithlogic.commonUiUtils.LoadingScreen
 import uiwithlogic.model.UserState

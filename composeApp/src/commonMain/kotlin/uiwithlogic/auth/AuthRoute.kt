@@ -3,6 +3,7 @@ package uiwithlogic.auth
 import androidx.compose.runtime.Composable
 import moe.tlaster.precompose.navigation.RouteBuilder
 import moe.tlaster.precompose.navigation.route.Route
+import org.real.AppDatabase
 import uiwithlogic.auth.ui.AuthScreen
 import uiwithlogic.auth.ui.AuthViewModel
 import utils.ScreenType
