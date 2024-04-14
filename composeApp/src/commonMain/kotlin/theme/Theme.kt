@@ -4,86 +4,46 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
-import androidx.compose.runtime.Composable
-
-private val LightColors = lightColorScheme(
-    primary = md_theme_light_primary,
-    onPrimary = md_theme_light_onPrimary,
-    primaryContainer = md_theme_light_primaryContainer,
-    onPrimaryContainer = md_theme_light_onPrimaryContainer,
-    secondary = md_theme_light_secondary,
-    onSecondary = md_theme_light_onSecondary,
-    secondaryContainer = md_theme_light_secondaryContainer,
-    onSecondaryContainer = md_theme_light_onSecondaryContainer,
-    tertiary = md_theme_light_tertiary,
-    onTertiary = md_theme_light_onTertiary,
-    tertiaryContainer = md_theme_light_tertiaryContainer,
-    onTertiaryContainer = md_theme_light_onTertiaryContainer,
-    error = md_theme_light_error,
-    errorContainer = md_theme_light_errorContainer,
-    onError = md_theme_light_onError,
-    onErrorContainer = md_theme_light_onErrorContainer,
-    background = md_theme_light_background,
-    onBackground = md_theme_light_onBackground,
-    surface = md_theme_light_surface,
-    onSurface = md_theme_light_onSurface,
-    surfaceVariant = md_theme_light_surfaceVariant,
-    onSurfaceVariant = md_theme_light_onSurfaceVariant,
-    outline = md_theme_light_outline,
-    inverseOnSurface = md_theme_light_inverseOnSurface,
-    inverseSurface = md_theme_light_inverseSurface,
-    inversePrimary = md_theme_light_inversePrimary,
-    surfaceTint = md_theme_light_surfaceTint,
-    outlineVariant = md_theme_light_outlineVariant,
-    scrim = md_theme_light_scrim,
-)
+import androidx.compose.runtime.*
+import theme.colors.*
 
 
-private val DarkColors = darkColorScheme(
-    primary = md_theme_dark_primary,
-    onPrimary = md_theme_dark_onPrimary,
-    primaryContainer = md_theme_dark_primaryContainer,
-    onPrimaryContainer = md_theme_dark_onPrimaryContainer,
-    secondary = md_theme_dark_secondary,
-    onSecondary = md_theme_dark_onSecondary,
-    secondaryContainer = md_theme_dark_secondaryContainer,
-    onSecondaryContainer = md_theme_dark_onSecondaryContainer,
-    tertiary = md_theme_dark_tertiary,
-    onTertiary = md_theme_dark_onTertiary,
-    tertiaryContainer = md_theme_dark_tertiaryContainer,
-    onTertiaryContainer = md_theme_dark_onTertiaryContainer,
-    error = md_theme_dark_error,
-    errorContainer = md_theme_dark_errorContainer,
-    onError = md_theme_dark_onError,
-    onErrorContainer = md_theme_dark_onErrorContainer,
-    background = md_theme_dark_background,
-    onBackground = md_theme_dark_onBackground,
-    surface = md_theme_dark_surface,
-    onSurface = md_theme_dark_onSurface,
-    surfaceVariant = md_theme_dark_surfaceVariant,
-    onSurfaceVariant = md_theme_dark_onSurfaceVariant,
-    outline = md_theme_dark_outline,
-    inverseOnSurface = md_theme_dark_inverseOnSurface,
-    inverseSurface = md_theme_dark_inverseSurface,
-    inversePrimary = md_theme_dark_inversePrimary,
-    surfaceTint = md_theme_dark_surfaceTint,
-    outlineVariant = md_theme_dark_outlineVariant,
-    scrim = md_theme_dark_scrim,
-)
 
+
+val ThemeColor = compositionLocalOf {
+    mutableStateOf(1)
+}
+val LocalDark = compositionLocalOf {
+    mutableStateOf(false)
+}
 @Composable
 fun AttendanceTheme(
-    useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {
-    val colors = if (!useDarkTheme) {
-        LightColors
-    } else {
-        DarkColors
-    }
+    val isDark = isSystemInDarkTheme()
+    val darkState = remember { mutableStateOf(isDark) }
+    val themeColor = remember { mutableStateOf(1) }
+    val themeState = themeColor.value
+    CompositionLocalProvider(
+        ThemeColor provides themeColor,
+        LocalDark provides darkState
+    ) {
+        val useDarkTheme by darkState
+        val colors = when (themeState) {
+            1 -> if (useDarkTheme) Color1.DarkColors else Color1.LightColors
+            2 -> if (useDarkTheme) Color2.DarkColors else Color2.LightColors
+            3 -> if (useDarkTheme) Color3.DarkColors else Color3.LightColors
+            4 -> if (useDarkTheme) Color4.DarkColors else Color4.LightColors
+            5 -> if (useDarkTheme) Color5.DarkColors else Color5.LightColors
+            6 -> if (useDarkTheme) Color6.DarkColors else Color6.LightColors
+            7 -> if (useDarkTheme) Color7.DarkColors else Color7.LightColors
+            8 -> if (useDarkTheme) Color8.DarkColors else Color8.LightColors
+            else -> if (useDarkTheme) Color9.DarkColors else Color9.LightColors
+        }
 
-    MaterialTheme(
-        colorScheme = colors,
-        content = content
-    )
+        MaterialTheme(
+            colorScheme = colors,
+            content = content
+        )
+    }
 }

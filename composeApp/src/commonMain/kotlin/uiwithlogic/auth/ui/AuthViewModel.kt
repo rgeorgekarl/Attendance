@@ -16,14 +16,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
-import org.real.AppDatabase
-import uiwithlogic.account.model.AccountDetailSer
+import uiwithlogic.inside.profile.model.AccountDetailSer
 import uiwithlogic.model.UserState
 import uiwithlogic.util.getClientSession
-import uiwithlogic.util.savePreferences
 
-class AuthViewModel(database: AppDatabase): ViewModel() {
-    private val queries = database.savePreferencesQueries
+class AuthViewModel(): ViewModel() {
     private val _inputState = MutableStateFlow(AuthUIState())
     val inputState = _inputState.asStateFlow()
 
@@ -47,7 +44,6 @@ class AuthViewModel(database: AppDatabase): ViewModel() {
                         )
                     )
                 }
-                savePreferences(queries)
                 _userState.value = UserState.Success("Sign up success")
             }catch (e: IOException) {
                 _userState.value = UserState.Error("No Internet")
@@ -77,7 +73,6 @@ class AuthViewModel(database: AppDatabase): ViewModel() {
                     email = inputState.value.email
                     password = inputState.value.password
                 }
-                savePreferences(savePreferencesQueries = queries)
                 _userState.value = UserState.Success("Sign in success")
             }catch (e: IOException) {
                 _userState.value = UserState.Error(
@@ -110,7 +105,6 @@ class AuthViewModel(database: AppDatabase): ViewModel() {
             try {
                 client.auth.signOut()
                 _userState.value = UserState.Success("Sign out success")
-                queries.clearData()
             } catch (e: Exception) {
                 _userState.value = UserState.Error(e.message ?: "Sign out failed")
             } finally {
@@ -124,8 +118,7 @@ class AuthViewModel(database: AppDatabase): ViewModel() {
     fun checkUser() {
         viewModelScope.launch {
             try {
-                getClientSession(queries)
-                savePreferences(savePreferencesQueries = queries)
+                getClientSession()
                 _userState.value = UserState.Success("User is signed in")
             } catch (e: YourNotLoggedInException) {
                 _userState.value = UserState.NotLoggedIn

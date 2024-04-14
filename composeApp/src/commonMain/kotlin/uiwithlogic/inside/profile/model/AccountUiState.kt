@@ -1,4 +1,4 @@
-package uiwithlogic.account.model
+package uiwithlogic.inside.profile.model
 
 data class AccountUiState(
     val id: String = "",

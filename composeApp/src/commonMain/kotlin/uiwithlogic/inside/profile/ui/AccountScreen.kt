@@ -1,19 +1,14 @@
-package uiwithlogic.account.ui
+package uiwithlogic.inside.profile.ui
 
-import androidx.compose.material3.Text
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import datasource.Supabase
-import exceptions.YourNotLoggedInException
-import io.github.jan.supabase.SupabaseClient
 import kotlinx.coroutines.*
 import moe.tlaster.precompose.viewmodel.viewModel
 import org.real.AppDatabase
-import uiwithlogic.account.repo.AccountRepoImp
+import uiwithlogic.inside.profile.repo.AccountRepoImp
 import uiwithlogic.commonUiUtils.LoadingScreen
 import uiwithlogic.model.UserState
 import utils.ScreenType
@@ -51,7 +46,6 @@ fun AccountScreen(
         is UserState.Loading -> {
             // Show loading screen
             LaunchedEffect(Unit) {
-                delay(2000L)
                 accountViewModel.fetchAccount()
                 accountViewModel.changeUserState(UserState.LoggedIn)
             }
@@ -89,7 +83,9 @@ fun AccountScreen(
                 onAddressChange = { accountViewModel.updateAddress(it) },
                 email = accountUiState.email,
                 onEmailChange = { accountViewModel.updateEmail(it) },
-                screenType = screenType, modifier = modifier
+                screenType = screenType,
+                logout = {accountViewModel.signOut()},
+                modifier = modifier,
             )
         }
     }

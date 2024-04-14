@@ -1,9 +1,7 @@
 package uiwithlogic.auth
 
-import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import moe.tlaster.precompose.navigation.RouteBuilder
-import moe.tlaster.precompose.navigation.route.Route
-import org.real.AppDatabase
 import uiwithlogic.auth.ui.AuthScreen
 import uiwithlogic.auth.ui.AuthViewModel
 import utils.ScreenType
@@ -14,6 +12,7 @@ fun RouteBuilder.authRoute(
     viewModel: AuthViewModel,
     screenType: ScreenType,
     onSuccess: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     group(route = group,initialRoute = AuthDestination.AuthScreen.name) {
         scene(AuthDestination.AuthScreen.name) {
@@ -21,6 +20,7 @@ fun RouteBuilder.authRoute(
                 viewModel = viewModel,
                 screenType = screenType,
                 onSuccess = onSuccess,
+                modifier = modifier
             )
         }
     }

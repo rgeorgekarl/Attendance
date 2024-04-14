@@ -1,36 +1,21 @@
 package uiwithlogic.auth.ui
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Rotate90DegreesCw
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import kotlinx.coroutines.Delay
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import moe.tlaster.precompose.viewmodel.viewModel
-import org.real.AppDatabase
 import uiwithlogic.auth.model.AuthType
 import uiwithlogic.commonUiUtils.LoadingScreen
 import uiwithlogic.model.UserState
-import uiwithlogic.util.getToken
 import utils.ScreenType
 
 @Composable
@@ -52,8 +37,6 @@ fun AuthScreen(
             UserState.Loading -> {
                 LaunchedEffect(Unit) {
                     launch {viewModel.checkUser()}
-                    delay(3000L)
-
                 }
                 LoadingScreen()
             }

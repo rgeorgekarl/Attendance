@@ -1,8 +1,10 @@
-package uiwithlogic.account.ui
+package uiwithlogic.inside.profile.ui
 
+import datasource.Supabase.client
 import exceptions.YourNotLoggedInException
 import io.github.jan.supabase.exceptions.HttpRequestException
 import io.github.jan.supabase.exceptions.UnknownRestException
+import io.github.jan.supabase.gotrue.auth
 import io.ktor.client.network.sockets.*
 import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,12 +14,9 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
-import org.real.AppDatabase
-import uiwithlogic.account.model.AccountUiState
-import uiwithlogic.account.repo.AccountRepository
+import uiwithlogic.inside.profile.model.AccountUiState
+import uiwithlogic.inside.profile.repo.AccountRepository
 import uiwithlogic.model.UserState
-import uiwithlogic.util.getClientSession
-import uiwithlogic.util.savePreferences
 
 class AccountViewModel(
     private val accountRepo: AccountRepository,
@@ -27,7 +26,11 @@ class AccountViewModel(
     private val _inputState = MutableStateFlow(AccountUiState())
     val inputState = _inputState.asStateFlow()
 
-
+    fun signOut() {
+        viewModelScope.launch {
+            client.auth.signOut()
+        }
+    }
 
     fun fetchAccount(){
         viewModelScope.launch {

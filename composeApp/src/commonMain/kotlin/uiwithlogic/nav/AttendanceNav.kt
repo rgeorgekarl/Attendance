@@ -1,19 +1,20 @@
 package uiwithlogic.nav
 
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
-import moe.tlaster.precompose.PreComposeApp
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import moe.tlaster.precompose.navigation.NavHost
-import moe.tlaster.precompose.navigation.rememberNavigator
+import moe.tlaster.precompose.navigation.Navigator
 import org.real.AppDatabase
-import uiwithlogic.account.AccountDestination
-import uiwithlogic.account.accountRoute
-import uiwithlogic.account.repo.AccountRepoImp
-import uiwithlogic.account.ui.AccountViewModel
-import uiwithlogic.auth.AuthDestination
+import uiwithlogic.inside.profile.accountRoute
+import uiwithlogic.inside.profile.repo.AccountRepoImp
+import uiwithlogic.inside.profile.ui.AccountViewModel
 import uiwithlogic.auth.authRoute
 import uiwithlogic.auth.ui.AuthViewModel
-import uiwithlogic.commonUiUtils.LoadingScreen
+import uiwithlogic.inside.home.homeRoute
+import uiwithlogic.inside.insideRoute
+import uiwithlogic.inside.settings.ui.SettingsViewModel
 import utils.ScreenType
 
 
@@ -25,32 +26,38 @@ import utils.ScreenType
 fun AttendanceNav(
     appDatabase: AppDatabase,
     screenType: ScreenType,
+    navigator: Navigator,
+    navDestination: NavDestination,
+    authSuccess: () -> Unit,
+    notLoggedIn: () -> Unit,
+    navModifier: Modifier = Modifier,
 ) {
-    var destination by rememberSaveable { mutableStateOf(NavDestination.Auth) }
-    PreComposeApp{
-        val navigator = rememberNavigator()
+    Column(
+        modifier = navModifier
+    ) {
         NavHost(
             navigator = navigator,
             initialRoute = NavDestination.Auth.name,
         ) {
             authRoute(
                 group = NavDestination.Auth.name,
-                viewModel = AuthViewModel(appDatabase),
+                viewModel = AuthViewModel(),
                 screenType = screenType,
                 onSuccess = {
-                    destination = NavDestination.Account
-                    navigator.navigate(destination.name)
+                    authSuccess()
+                    navigator.navigate(navDestination.name)
                 },
             )
-            accountRoute(
-                group = NavDestination.Account.name,
+            insideRoute(
+                group = NavDestination.Attendance.name,
                 appDatabase = appDatabase,
-                accountViewModel = AccountViewModel(AccountRepoImp(appDatabase)),
                 screenType = screenType,
-                notLoggedIn = {
-                    destination = NavDestination.Auth
-                    navigator.navigate(destination.name)
-                }
+                navigator = navigator,
+                navDestination = navDestination,
+                accountViewModel = AccountViewModel(AccountRepoImp(appDatabase)),
+                notLoggedIn = notLoggedIn,
+                settingsViewModel = SettingsViewModel(appDatabase),
+
             )
         }
     }

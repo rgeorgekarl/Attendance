@@ -1,11 +1,16 @@
-package uiwithlogic.account
+package uiwithlogic.inside.profile
 
-import androidx.compose.runtime.Composable
-import moe.tlaster.precompose.navigation.Navigator
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import moe.tlaster.precompose.navigation.RouteBuilder
 import org.real.AppDatabase
-import uiwithlogic.account.ui.AccountScreen
-import uiwithlogic.account.ui.AccountViewModel
+import uiwithlogic.inside.home.homeRoute
+import uiwithlogic.inside.home.ui.HomeScreen
+import uiwithlogic.inside.profile.ui.AccountScreen
+import uiwithlogic.inside.profile.ui.AccountViewModel
+import uiwithlogic.nav.Attendance
 import utils.ScreenType
 
 
@@ -15,6 +20,7 @@ fun RouteBuilder.accountRoute(
     accountViewModel: AccountViewModel,
     screenType: ScreenType,
     notLoggedIn: () -> Unit = {},
+    modifier: Modifier = Modifier
 ) {
     group(route = group, initialRoute = AccountDestination.AccountScreen.name) {
         scene(AccountDestination.AccountScreen.name) {
@@ -22,9 +28,10 @@ fun RouteBuilder.accountRoute(
                 appDatabase = appDatabase,
                 accountViewModel = accountViewModel,
                 screenType = screenType,
-                notLoggedIn = notLoggedIn
+                notLoggedIn = notLoggedIn,
+                modifier = modifier.padding(top = 56.dp)
             )
         }
     }
-
 }
+

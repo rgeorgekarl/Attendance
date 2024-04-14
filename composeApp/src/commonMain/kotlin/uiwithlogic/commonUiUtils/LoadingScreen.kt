@@ -10,14 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
-import attendance.composeapp.generated.resources.Res
-import attendance.composeapp.generated.resources.frame_1
-import attendance.composeapp.generated.resources.loading_img
-import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
 import utils.getResourceImage
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun LoadingScreen(
     modifier: Modifier = Modifier

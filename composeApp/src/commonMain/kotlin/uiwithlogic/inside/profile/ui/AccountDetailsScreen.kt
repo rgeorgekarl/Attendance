@@ -1,5 +1,6 @@
-package uiwithlogic.account.ui
+package uiwithlogic.inside.profile.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -41,6 +42,7 @@ fun AccountDetailsScreen(
     email: String = "",
     onEmailChange: (String) -> Unit = {},
     screenType: ScreenType,
+    logout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val modiDp = when (screenType) {
@@ -78,6 +80,10 @@ fun AccountDetailsScreen(
             modifier = modiDp,
             elevation = CardDefaults.cardElevation(4.dp)
         ) {
+            AccountButton(
+                text = "logout",
+                onClick = {logout()}
+            )
             AccountT(
                 screenType = screenType,
                 firstName = firstName,
@@ -276,6 +282,20 @@ fun AccountT(
                 label = "Email",
                 readOnly = readOnly
             )
+            AnimatedVisibility(visible = true) {
+                Row {
+                    AccountButton(
+                        text = "Save",
+                        onClick = {},
+                    )
+                    AccountButton(
+                        text = "Cancel",
+                        onClick = {},
+                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                        contentColor = MaterialTheme.colorScheme.onErrorContainer
+                    )
+                }
+            }
         }
     }
 }
@@ -349,8 +369,8 @@ fun AccountTextBox(
 fun AccountButton(
     text: String,
     onClick: () -> Unit,
-    containerColor: Color = MaterialTheme.colorScheme.secondary,
-    contentColor: Color = MaterialTheme.colorScheme.onSecondary,
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     modifier: Modifier = Modifier
 ) {
     Button(
@@ -359,7 +379,7 @@ fun AccountButton(
             containerColor = containerColor,
             contentColor = contentColor,
         ),
-        modifier = modifier.size(200.dp)
+        modifier = modifier.size(width = 100.dp, height = 50.dp)
     ) {
         Text(text)
     }

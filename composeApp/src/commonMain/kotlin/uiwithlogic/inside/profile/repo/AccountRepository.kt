@@ -1,13 +1,12 @@
-package uiwithlogic.account.repo
+package uiwithlogic.inside.profile.repo
 
 import datasource.Supabase.client
 import exceptions.YourNotLoggedInException
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.postgrest.from
 import org.real.AppDatabase
-import uiwithlogic.account.model.AccountDetailSer
-import uiwithlogic.account.toAccountDetailSer
-import uiwithlogic.util.getClientSession
+import uiwithlogic.inside.profile.model.AccountDetailSer
+import uiwithlogic.inside.profile.toAccountDetailSer
 
 interface AccountRepository {
     suspend fun fetchAccountDetails()
@@ -19,7 +18,6 @@ class AccountRepoImp(
     private val database: AppDatabase
 ): AccountRepository {
     private val queries = database.accountDetailsQueries
-    private val savePreferencesQueries = database.savePreferencesQueries
 
     override suspend fun fetchAccountDetails() {
         val accountDetails = client.from("accountDetails")

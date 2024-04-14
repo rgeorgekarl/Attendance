@@ -1,8 +1,13 @@
 package uiwithlogic.nav
 
 enum class NavDestination {
-    Loading,
     Auth,
-    Account,
     Attendance
+}
+
+enum class Attendance {
+    Home,
+    Real,
+    Manage,
+    Settings
 }

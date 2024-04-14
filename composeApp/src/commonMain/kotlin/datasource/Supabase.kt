@@ -5,7 +5,6 @@ import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.gotrue.Auth
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.storage.Storage
-import org.real.SavePreferencesQueries
 
 
 object Supabase {
@@ -22,6 +21,3 @@ object Supabase {
     }
 }
 
-fun refreshCurrentSession(savePreferencesQueries: SavePreferencesQueries) {
-    val getToken = savePreferencesQueries.getToken("accessToken").executeAsOneOrNull()
-}

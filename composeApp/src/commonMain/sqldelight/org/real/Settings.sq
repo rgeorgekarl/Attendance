@@ -1,0 +1,15 @@
+CREATE TABLE Settings (
+access Text PRIMARY KEY,
+theme Integer,
+isDarkMode Integer
+);
+
+INSERT INTO Settings (access, theme, isDarkMode) VALUES ("settings", 5, 0);
+
+-- insert or replace the settings
+insertOrReplace:
+INSERT OR REPLACE INTO Settings (access, theme, isDarkMode) VALUES (?, ?, ?);
+
+-- get the current settings
+getSettings:
+SELECT * FROM Settings;

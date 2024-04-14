@@ -1,6 +1,5 @@
-package uiwithlogic.account.model
+package uiwithlogic.inside.profile.model
 
-import kotlinx.datetime.DateTimePeriod
 import kotlinx.serialization.Serializable
 
 @Serializable

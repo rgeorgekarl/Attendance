@@ -11,8 +11,6 @@ plugins {
 }
 
 kotlin {
-
-
     androidTarget {
         compilations.all {
             kotlinOptions {
@@ -20,7 +18,7 @@ kotlin {
             }
         }
     }
-    
+
     jvm("desktop")
     
     listOf(
@@ -66,25 +64,18 @@ kotlin {
             // precompose - viewmodel and navigation
             implementation(libs.precompose.navigation)
             implementation(libs.precompose.viewmodel)
+            //coroutines
+            implementation(libs.coroutines)
 
         }
-
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.cio)
             implementation(libs.sqldelight.jvm)
         }
 
-        nativeMain.dependencies {
+        iosMain.dependencies {
             implementation(libs.sqldelight.native)
-        }
-
-        jvmMain.dependencies {
-            implementation(libs.sqldelight.jvm)
-        }
-
-        appleMain.dependencies {
-            implementation(libs.ktor.client.darwin)
         }
     }
     sqldelight {
@@ -110,8 +101,8 @@ android {
 
     defaultConfig {
         applicationId = "org.real.project"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        minSdk = 24
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
     }
@@ -123,6 +114,8 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("debug")
+
         }
     }
     compileOptions {
