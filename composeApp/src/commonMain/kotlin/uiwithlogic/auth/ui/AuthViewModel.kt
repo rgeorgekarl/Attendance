@@ -1,7 +1,5 @@
 package uiwithlogic.auth.ui
 
-import uiwithlogic.auth.model.AuthType
-import uiwithlogic.auth.model.AuthUIState
 import datasource.Supabase.client
 import exceptions.YourNotLoggedInException
 import io.github.jan.supabase.exceptions.HttpRequestException
@@ -16,16 +14,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
+import uiwithlogic.auth.model.AuthType
+import uiwithlogic.auth.model.AuthUIState
 import uiwithlogic.inside.profile.model.AccountDetailSer
 import uiwithlogic.model.UserState
 import uiwithlogic.util.getClientSession
 
-class AuthViewModel(): ViewModel() {
+class AuthViewModel : ViewModel() {
     private val _inputState = MutableStateFlow(AuthUIState())
     val inputState = _inputState.asStateFlow()
 
     private val _userState = MutableStateFlow<UserState>(UserState.Loading)
     val userState = _userState.asStateFlow()
+
 
     fun signUp() {
         _userState.value = UserState.Loading
@@ -44,18 +45,19 @@ class AuthViewModel(): ViewModel() {
                         )
                     )
                 }
+                clearInput()
                 _userState.value = UserState.Success("Sign up success")
-            }catch (e: IOException) {
+            } catch (e: IOException) {
                 _userState.value = UserState.Error("No Internet")
-            }catch (e: SocketTimeoutException) {
+            } catch (e: SocketTimeoutException) {
                 _userState.value = UserState.Error(
                     message = "Connection Timeout"
                 )
-            }catch (e: UnknownRestException) {
+            } catch (e: UnknownRestException) {
                 _userState.value = UserState.Error(
                     message = "No Connection"
                 )
-            }catch (e: HttpRequestException) {
+            } catch (e: HttpRequestException) {
                 _userState.value = UserState.Error(
                     message = "No Connection"
                 )
@@ -73,44 +75,33 @@ class AuthViewModel(): ViewModel() {
                     email = inputState.value.email
                     password = inputState.value.password
                 }
+                clearInput()
                 _userState.value = UserState.Success("Sign in success")
-            }catch (e: IOException) {
+            } catch (e: IOException) {
                 _userState.value = UserState.Error(
                     message = "No Connection"
                 )
-            }catch (e: SocketTimeoutException) {
+            } catch (e: SocketTimeoutException) {
                 _userState.value = UserState.Error(
                     message = "Connection Timeout"
                 )
-            }catch (e: UnknownRestException) {
+            } catch (e: UnknownRestException) {
                 _userState.value = UserState.Error(
                     message = "No Connection"
                 )
-            }catch (e: HttpRequestException) {
+            } catch (e: HttpRequestException) {
                 _userState.value = UserState.Error(
                     message = "No Connection"
                 )
             } catch (e: Exception) {
                 _userState.value = UserState.Error("Sign in failed")
+                client.auth.signOut()
             }
         }
     }
 
     fun changeUserState(newState: UserState) {
         _userState.value = newState
-    }
-
-    fun signOut() {
-        viewModelScope.launch {
-            try {
-                client.auth.signOut()
-                _userState.value = UserState.Success("Sign out success")
-            } catch (e: Exception) {
-                _userState.value = UserState.Error(e.message ?: "Sign out failed")
-            } finally {
-                client.close()
-            }
-        }
     }
 
 
@@ -124,15 +115,15 @@ class AuthViewModel(): ViewModel() {
                 _userState.value = UserState.NotLoggedIn
             } catch (e: IOException) {
                 _userState.value = UserState.Error(message = "No Internet Connection")
-            }catch (e: SocketTimeoutException) {
+            } catch (e: SocketTimeoutException) {
                 _userState.value = UserState.Error(
                     message = "Connection Timeout"
                 )
-            }catch (e: UnknownRestException) {
+            } catch (e: UnknownRestException) {
                 _userState.value = UserState.Error(
                     message = "No Connection"
                 )
-            }catch (e: HttpRequestException) {
+            } catch (e: HttpRequestException) {
                 _userState.value = UserState.Error(
                     message = "No Connection"
                 )
@@ -141,7 +132,6 @@ class AuthViewModel(): ViewModel() {
             }
         }
     }
-
 
 
     fun clearInput() {

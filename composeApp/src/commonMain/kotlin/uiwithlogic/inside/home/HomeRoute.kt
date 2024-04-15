@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.dp
 import moe.tlaster.precompose.navigation.RouteBuilder
 import uiwithlogic.inside.home.ui.HomeScreen
 
-fun RouteBuilder.homeRoute(
+internal fun RouteBuilder.homeRoute(
     group: String,
 ) {
     group(route = group, initialRoute = HomeDestination.HomeScreen.name) {

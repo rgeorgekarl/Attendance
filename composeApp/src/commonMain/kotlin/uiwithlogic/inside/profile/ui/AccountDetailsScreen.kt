@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,8 +41,11 @@ fun AccountDetailsScreen(
     onAddressChange: (String) -> Unit = {},
     email: String = "",
     onEmailChange: (String) -> Unit = {},
+    isEditable: () -> Unit = {},
+    editable: Boolean = false,
+    saveOnClick: () -> Unit = {},
+    cancelOnClick: () -> Unit = {},
     screenType: ScreenType,
-    logout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val modiDp = when (screenType) {
@@ -54,6 +57,7 @@ fun AccountDetailsScreen(
                 bottom = 4.dp
             )
         }
+
         ScreenType.MEDIUM -> {
             modifier.padding(
                 top = 16.dp,
@@ -62,6 +66,7 @@ fun AccountDetailsScreen(
                 bottom = 4.dp
             )
         }
+
         ScreenType.EXPANDED -> {
             modifier.padding(
                 top = 16.dp,
@@ -80,10 +85,6 @@ fun AccountDetailsScreen(
             modifier = modiDp,
             elevation = CardDefaults.cardElevation(4.dp)
         ) {
-            AccountButton(
-                text = "logout",
-                onClick = {logout()}
-            )
             AccountT(
                 screenType = screenType,
                 firstName = firstName,
@@ -111,6 +112,10 @@ fun AccountDetailsScreen(
                 onAddressChange = onAddressChange,
                 email = email,
                 onEmailChange = onEmailChange,
+                isEditable = isEditable,
+                editable = editable,
+                saveOnClick = saveOnClick,
+                cancelOnClick = cancelOnClick,
             )
         }
     }
@@ -118,7 +123,7 @@ fun AccountDetailsScreen(
 }
 
 @Composable
-fun AccountT(
+private fun AccountT(
     screenType: ScreenType,
     firstName: String,
     onFirstNameChange: (String) -> Unit,
@@ -145,7 +150,10 @@ fun AccountT(
     onAddressChange: (String) -> Unit,
     email: String,
     onEmailChange: (String) -> Unit,
-    readOnly: Boolean = false,
+    isEditable: () -> Unit,
+    editable: Boolean,
+    saveOnClick: () -> Unit,
+    cancelOnClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val verticalScrollState = rememberScrollState()
@@ -158,6 +166,7 @@ fun AccountT(
                 bottom = 4.dp
             )
         }
+
         ScreenType.MEDIUM -> {
             modifier.padding(
                 top = 25.dp,
@@ -166,6 +175,7 @@ fun AccountT(
                 bottom = 4.dp
             )
         }
+
         ScreenType.EXPANDED -> {
             modifier.padding(
                 top = 16.dp,
@@ -175,18 +185,16 @@ fun AccountT(
             )
         }
     }
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier) {
         EditButton(
-            isEdit = true,
-            isEditable = { },
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(8.dp)
+            isEdit = editable,
+            isEditable = isEditable,
+            modifier = Modifier.align(Alignment.TopEnd)
         )
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start,
-            modifier = dpSize
+            modifier = dpSize.padding(top = 20.dp)
                 .verticalScroll(verticalScrollState)
         ) {
             AccountTitleText(text = "Account Details")
@@ -194,19 +202,19 @@ fun AccountT(
                 value = firstName,
                 onValueChange = { onFirstNameChange(it) },
                 label = "First Name",
-                readOnly = readOnly
+                readOnly = editable
             )
             AccountTextBox(
                 value = middleName,
                 onValueChange = onMiddleNameChange,
                 label = "Middle Name",
-                readOnly = readOnly
+                readOnly = editable
             )
             AccountTextBox(
                 value = lastName,
                 onValueChange = onLastNameChange,
                 label = "Last Name",
-                readOnly = readOnly
+                readOnly = editable
             )
             AccountHorizontalDivider()
             AccountTitleText(text = "Other Information")
@@ -214,13 +222,13 @@ fun AccountT(
                 value = nickName,
                 onValueChange = onNickNameChange,
                 label = "Nick Name",
-                readOnly = readOnly
+                readOnly = editable
             )
             AccountTextBox(
                 value = bio,
                 onValueChange = onBioChange,
                 label = "Bio",
-                readOnly = readOnly,
+                readOnly = editable,
                 modifier = Modifier.sizeIn(
                     maxHeight = 200.dp,
                     maxWidth = 1000.dp,
@@ -248,19 +256,19 @@ fun AccountT(
                 value = school,
                 onValueChange = onSchoolChange,
                 label = "School",
-                readOnly = readOnly
+                readOnly = editable
             )
             AccountTextBox(
                 value = schoolYear,
                 onValueChange = { onSchoolYearChange(it) },
                 label = "School Year",
-                readOnly = readOnly
+                readOnly = editable
             )
             AccountTextBox(
                 value = course,
                 onValueChange = onCourseChange,
                 label = "Course",
-                readOnly = readOnly
+                readOnly = editable
             )
             AccountHorizontalDivider()
             AccountTitleText(text = "Contact")
@@ -268,31 +276,38 @@ fun AccountT(
                 value = contactNumber,
                 onValueChange = onContactNumberChange,
                 label = "Contact Number",
-                readOnly = readOnly
+                readOnly = editable
             )
             AccountTextBox(
                 value = address,
                 onValueChange = onAddressChange,
                 label = "Address",
-                readOnly = readOnly
+                readOnly = editable
             )
             AccountTextBox(
                 value = email,
                 onValueChange = onEmailChange,
                 label = "Email",
-                readOnly = readOnly
+                readOnly = true,
+                modifier = Modifier.padding(bottom = 12.dp)
             )
-            AnimatedVisibility(visible = true) {
-                Row {
+            AnimatedVisibility(visible = !editable) {
+                AccountHorizontalDivider()
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.fillMaxWidth().padding(16.dp)
+                ) {
                     AccountButton(
                         text = "Save",
-                        onClick = {},
+                        onClick = saveOnClick,
+                        modifier = Modifier.padding(8.dp)
                     )
                     AccountButton(
                         text = "Cancel",
-                        onClick = {},
+                        onClick = cancelOnClick,
                         containerColor = MaterialTheme.colorScheme.errorContainer,
-                        contentColor = MaterialTheme.colorScheme.onErrorContainer
+                        contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                        modifier = Modifier.padding(8.dp)
                     )
                 }
             }
@@ -301,7 +316,7 @@ fun AccountT(
 }
 
 @Composable
-fun AccountTitleText(
+private fun AccountTitleText(
     text: String,
     modifier: Modifier = Modifier
 ) {
@@ -315,7 +330,7 @@ fun AccountTitleText(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AccountDatePicker(
+private fun AccountDatePicker(
     birth: String,
     getDate: (Long) -> Unit = {},
     modifier: Modifier = Modifier
@@ -330,23 +345,22 @@ fun AccountDatePicker(
                 maxHeight = 600.dp
             )
         )
-        getDate(datePickerState.selectedDateMillis?:"0".toLong())
+        getDate(datePickerState.selectedDateMillis ?: "0".toLong())
     }
 }
 
 @Composable
-fun AccountHorizontalDivider(
+private fun AccountHorizontalDivider(
     modifier: Modifier = Modifier
 ) {
     HorizontalDivider(
         thickness = 2.dp,
-        modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-
+        modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp),
     )
 }
 
 @Composable
-fun AccountTextBox(
+private fun AccountTextBox(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,

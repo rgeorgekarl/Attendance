@@ -1,12 +1,14 @@
 package uiwithlogic.nav
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -22,7 +24,7 @@ import uiwithlogic.nav.util.list
 import utils.ScreenType
 
 @Composable
-fun Nav(
+internal fun Nav(
     appDatabase: AppDatabase,
     screenType: ScreenType,
     navigationViewModel: NavigationViewModel = viewModel(NavigationViewModel::class) { NavigationViewModel() },
@@ -32,7 +34,7 @@ fun Nav(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     when (screenType) {
-        ScreenType.EXPANDED  -> {
+        ScreenType.EXPANDED -> {
             if (navState.destination != NavDestination.Auth) {
                 PermanentNavigationDrawer(
                     drawerContent = {
@@ -53,7 +55,11 @@ fun Nav(
                         navigationViewModel,
                         navState,
                         navOnClick = { scope.launch { drawerState.open() } },
-                        actOnClick = { navigationViewModel.updateDestination(NavDestination.Auth) }
+                        logoutOnClick = {
+                            navigationViewModel.signOut()
+                            navigationViewModel.updateDestination(NavDestination.Auth)
+                            navigator.navigate(NavDestination.Auth.name)
+                        }
                     )
                 }
             } else {
@@ -64,10 +70,15 @@ fun Nav(
                     navigationViewModel,
                     navState,
                     navOnClick = { scope.launch { drawerState.open() } },
-                    actOnClick = { navigationViewModel.updateDestination(NavDestination.Auth) }
+                    logoutOnClick = {
+                        navigationViewModel.signOut()
+                        navigationViewModel.updateDestination(NavDestination.Auth)
+                        navigator.navigate(NavDestination.Auth.name)
+                    }
                 )
             }
         }
+
         else -> {
             DismissibleNavDrawer(
                 navDrawerCon = {
@@ -78,7 +89,7 @@ fun Nav(
                                 navigationViewModel.updateAttendance(it)
                                 navigator.navigate(it.name)
                             }
-                                       },
+                        },
                         navigationItemContentList = list,
                         modifier = Modifier
                     )
@@ -92,7 +103,11 @@ fun Nav(
                         navigationViewModel,
                         navState,
                         navOnClick = { scope.launch { drawerState.open() } },
-                        actOnClick = { navigationViewModel.updateDestination(NavDestination.Auth) }
+                        logoutOnClick = {
+                            navigationViewModel.signOut()
+                            navigationViewModel.updateDestination(NavDestination.Auth)
+                            navigator.navigate(NavDestination.Auth.name)
+                        }
                     )
                 }
             )
@@ -101,14 +116,14 @@ fun Nav(
 }
 
 @Composable
-fun AttendanceScaffold(
+private fun AttendanceScaffold(
     appDatabase: AppDatabase,
     screenType: ScreenType,
     navigator: Navigator,
     navigationViewModel: NavigationViewModel = viewModel(NavigationViewModel::class) { NavigationViewModel() },
     navState: NavigationState,
     navOnClick: () -> Unit,
-    actOnClick: () -> Unit,
+    logoutOnClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -117,13 +132,13 @@ fun AttendanceScaffold(
                     title = navState.attendance.name,
                     navImageVector = Icons.Filled.Menu,
                     navOnClick = navOnClick,
-                    actImageVector = Icons.Filled.AccountBox,
-                    actOnClick = actOnClick,
+                    actImageVector = Icons.Filled.MoreVert,
+                    logoutOnClick = logoutOnClick,
                     modifier = Modifier
                 )
             }
         },
-        ) {
+    ) {
         AttendanceNav(
             appDatabase,
             screenType,

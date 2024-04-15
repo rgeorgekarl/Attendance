@@ -2,9 +2,12 @@ package uiwithlogic.nav.util
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 
 //engstudent2
@@ -18,10 +21,18 @@ fun CenterTopBar(
     navImageVector: ImageVector,
     navOnClick: () -> Unit,
     actImageVector: ImageVector,
-    actOnClick: () -> Unit,
-    modifier: Modifier= Modifier
-
+    logoutOnClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
+    var isContextMenuVisible by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    var itemHeight by remember {
+        mutableStateOf(0.dp)
+    }
+
+    val density = LocalDensity.current
     CenterAlignedTopAppBar(
         title = {
             Text(
@@ -30,20 +41,45 @@ fun CenterTopBar(
             )
         },
         navigationIcon = {
+
             NavIcon(
                 imageVector = navImageVector,
                 contentDescription = "nav",
                 onClick = navOnClick,
                 modifier = Modifier.padding(16.dp)
             )
+
         },
         actions = {
+
+
             NavIcon(
                 imageVector = actImageVector,
                 contentDescription = "Account",
-                onClick = actOnClick,
+                onClick = {
+                    isContextMenuVisible = true
+                },
                 modifier = Modifier.padding(16.dp)
+                    .onSizeChanged {
+                        itemHeight = with(density) { it.height.toDp() }
+                    }
             )
+
+            DropdownMenu(
+                expanded = isContextMenuVisible,
+                onDismissRequest = { isContextMenuVisible = false },
+
+                ) {
+                DropdownMenuItem(
+                    onClick = {
+                        logoutOnClick()
+                    },
+                    text = {
+                        Text(text = "Logout")
+                    }
+                )
+            }
+
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,

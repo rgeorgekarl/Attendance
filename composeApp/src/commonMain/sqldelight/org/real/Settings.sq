@@ -4,11 +4,11 @@ theme Integer,
 isDarkMode Integer
 );
 
-INSERT INTO Settings (access, theme, isDarkMode) VALUES ("settings", 5, 0);
+INSERT INTO Settings (access, theme, isDarkMode) VALUES ("settings", 3, 1);
 
 -- insert or replace the settings
 insertOrReplace:
-INSERT OR REPLACE INTO Settings (access, theme, isDarkMode) VALUES (?, ?, ?);
+INSERT OR REPLACE INTO Settings (access, theme, isDarkMode) VALUES ("settings", ?, ?);
 
 -- get the current settings
 getSettings:

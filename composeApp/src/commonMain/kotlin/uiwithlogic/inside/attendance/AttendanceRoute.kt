@@ -1,7 +1,7 @@
 package uiwithlogic.inside.attendance
 
 import moe.tlaster.precompose.navigation.RouteBuilder
-import uiwithlogic.inside.attendance.ui.AttendanceScreen
+import uiwithlogic.inside.attendance.common.AttendanceScreen
 
 fun RouteBuilder.attendanceRoute(
     group: String,

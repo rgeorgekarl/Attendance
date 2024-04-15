@@ -8,7 +8,7 @@ import moe.tlaster.precompose.navigation.RouteBuilder
 import uiwithlogic.inside.settings.ui.SettingsScreen
 import uiwithlogic.inside.settings.ui.SettingsViewModel
 
-fun RouteBuilder.settingRoute(
+internal fun RouteBuilder.settingRoute(
     group: String,
     settingsViewModel: SettingsViewModel
 ) {

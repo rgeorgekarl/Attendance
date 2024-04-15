@@ -12,5 +12,8 @@ val colors =
         Color6.LightColors.primary,
         Color7.LightColors.primary,
         Color8.LightColors.primary,
-        Color9.LightColors.primary
+        Color9.LightColors.primary,
+        Color10.LightColors.primary,
+        Color11.LightColors.primary,
+        Color12.LightColors.primary,
         )

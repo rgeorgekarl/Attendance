@@ -16,6 +16,7 @@ import moe.tlaster.precompose.viewmodel.ViewModel
 import moe.tlaster.precompose.viewmodel.viewModelScope
 import uiwithlogic.inside.profile.model.AccountUiState
 import uiwithlogic.inside.profile.repo.AccountRepository
+import uiwithlogic.inside.profile.toAccountDetailSer
 import uiwithlogic.model.UserState
 
 class AccountViewModel(
@@ -29,6 +30,35 @@ class AccountViewModel(
     fun signOut() {
         viewModelScope.launch {
             client.auth.signOut()
+        }
+    }
+
+    fun saveChanges() {
+        viewModelScope.launch {
+            try {
+                accountRepo.upsert(_inputState.value.toAccountDetailSer())
+                _accountState.value = UserState.LoggedIn
+            } catch (e: YourNotLoggedInException) {
+                _accountState.value = UserState.NotLoggedIn
+            } catch (e: IOException) {
+                saveChanges()
+            } catch (e: HttpRequestException) {
+                saveChanges()
+            } catch (e: UnknownRestException) {
+                saveChanges()
+            } catch (e: SocketTimeoutException) {
+                saveChanges()
+            } catch (e: IOException) {
+                saveChanges()
+            } catch (e: Exception) {
+                _accountState.value = UserState.Error("An error occurred")
+            }
+        }
+    }
+
+    fun changeEditState(t: Boolean) {
+        _inputState.update { currentState ->
+            currentState.copy(editable = t)
         }
     }
 
@@ -66,20 +96,20 @@ class AccountViewModel(
             _inputState.value = _inputState.value.copy(
                 id = accountDetails.id,
                 givenId = accountDetails.givenId?.toInt() ?: 0,
-                firstName = accountDetails.firstName,
-                middleName = accountDetails.middleName,
-                lastName = accountDetails.lastName,
-                nickName = accountDetails.nickName,
-                bio = accountDetails.bio,
+                firstName = accountDetails.firstName ?: "",
+                middleName = accountDetails.middleName ?: "",
+                lastName = accountDetails.lastName ?: "",
+                nickName = accountDetails.nickName ?: "",
+                bio = accountDetails.bio ?: "",
                 birth = accountDetails.birth ?:"0",
                 age = accountDetails.age.toString(),
-                school = accountDetails.school,
+                school = accountDetails.school ?: "",
                 schoolYear = accountDetails.schoolYear.toString(),
-                course = accountDetails.course,
+                course = accountDetails.course ?: "",
                 contactNumber = accountDetails.contactNumber.toString(),
-                address = accountDetails.address,
-                email = accountDetails.email,
-                icon = accountDetails.icon,
+                address = accountDetails.address ?: "",
+                email = accountDetails.email ?: "",
+                icon = accountDetails.icon ?: "",
             )
         }
     }

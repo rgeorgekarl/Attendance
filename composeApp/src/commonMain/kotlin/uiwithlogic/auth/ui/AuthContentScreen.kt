@@ -3,7 +3,6 @@ package uiwithlogic.auth.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -20,7 +19,7 @@ import utils.ScreenType
 import utils.getResourceImage
 
 @Composable
-fun AuthContentScreen(
+internal fun AuthContentScreen(
     screenType: ScreenType,
     auth: AuthType,
     email: String,
@@ -106,7 +105,7 @@ fun AuthContentScreen(
 
 
 @Composable
-fun AuthTypeRow(
+private fun AuthTypeRow(
     auth: AuthType,
     onAuthTypeChange: () -> Unit,
     firstTextStyle: TextStyle = MaterialTheme.typography.displaySmall,
@@ -121,9 +120,9 @@ fun AuthTypeRow(
             style = firstTextStyle
         )
         Text(
-            text = if(auth.name == "LOGIN") AuthType.SIGNUP.name else AuthType.LOGIN.name,
+            text = if (auth.name == "LOGIN") AuthType.SIGNUP.name else AuthType.LOGIN.name,
             style = secondTextStyle,
-            modifier = Modifier.clickable{
+            modifier = Modifier.clickable {
                 onAuthTypeChange()
             }
         )
@@ -131,7 +130,7 @@ fun AuthTypeRow(
 }
 
 @Composable
-fun AuthButton(
+private fun AuthButton(
     text: String,
     onClick: () -> Unit,
     screenType: ScreenType,
@@ -154,7 +153,7 @@ fun AuthButton(
 }
 
 @Composable
-fun AuthTextBox(
+private fun AuthTextBox(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
@@ -173,7 +172,7 @@ fun AuthTextBox(
 }
 
 @Composable
-fun AuthLogo(
+private fun AuthLogo(
     screenType: ScreenType,
     modifier: Modifier = Modifier
 ) {
@@ -184,7 +183,7 @@ fun AuthLogo(
     }
     Box {
         Image(
-            painter = getResourceImage(imageName = "frame_1", "xml"),
+            painter = getResourceImage(imageName = "smc", "png"),
             contentDescription = "Logo",
             modifier = modifier.size(dpSize.dp).padding(0.dp)
         )

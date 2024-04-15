@@ -17,26 +17,40 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun VerticalGridList(
+internal fun VerticalGridList(
     colors: List<Color>,
     selected: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(60.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalArrangement = Arrangement.Center
+    Column(
+        modifier = modifier.padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        items(colors.size) { index ->
-            ThemeItemCard(
-                color = colors[index],
-                onClick = { selected(index + 1) }
-            )
+        Text(
+            text = "Select theme color:",
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(8.dp)
+        )
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(60.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(8.dp)
+        ) {
+            items(colors.size) { index ->
+                ThemeItemCard(
+                    color = colors[index],
+                    onClick = { selected(index + 1) },
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
         }
     }
 }
 
 @Composable
-fun ThemeItemCard(
+private fun ThemeItemCard(
     color: Color,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -53,13 +67,18 @@ fun ThemeItemCard(
 }
 
 @Composable
-fun LightOrDark(
+internal fun LightOrDark(
     chosen: (Boolean) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Text(
+            text = "Select theme mode:",
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(8.dp)
+        )
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier.fillMaxWidth()
@@ -68,13 +87,13 @@ fun LightOrDark(
                 imageVector = Icons.Default.LightMode,
                 contentDescription = "Light Mode",
                 tint = Color.White,
-                modifier = Modifier.clickable { chosen(false) }
+                modifier = Modifier.clickable { chosen(false) }.size(60.dp)
             )
             Icon(
                 imageVector = Icons.Default.DarkMode,
                 contentDescription = "Dark Mode",
                 tint = Color.Black,
-                modifier = Modifier.clickable { chosen(true) }
+                modifier = Modifier.clickable { chosen(true) }.size(60.dp)
             )
         }
 

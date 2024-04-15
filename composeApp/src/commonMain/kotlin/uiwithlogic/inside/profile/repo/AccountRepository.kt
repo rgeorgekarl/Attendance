@@ -16,7 +16,7 @@ interface AccountRepository {
 
 class AccountRepoImp(
     private val database: AppDatabase
-): AccountRepository {
+) : AccountRepository {
     private val queries = database.accountDetailsQueries
 
     override suspend fun fetchAccountDetails() {
@@ -36,7 +36,7 @@ class AccountRepoImp(
     private fun queryUpsert(accountDetails: AccountDetailSer) {
         queries.insertOrReplace(
             id = accountDetails.id,
-            givenId = accountDetails.givenId,
+            givenId = accountDetails.givenId?.toLong(),
             firstName = accountDetails.firstName,
             middleName = accountDetails.middleName,
             lastName = accountDetails.lastName,

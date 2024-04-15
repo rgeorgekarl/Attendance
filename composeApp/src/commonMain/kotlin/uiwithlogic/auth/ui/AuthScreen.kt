@@ -7,19 +7,17 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import kotlinx.coroutines.launch
 import uiwithlogic.auth.model.AuthType
 import uiwithlogic.commonUiUtils.LoadingScreen
 import uiwithlogic.model.UserState
 import utils.ScreenType
 
 @Composable
-fun AuthScreen(
+internal fun AuthScreen(
     viewModel: AuthViewModel,
     screenType: ScreenType,
     onSuccess: () -> Unit,
@@ -35,24 +33,26 @@ fun AuthScreen(
     ) {
         when (userState) {
             UserState.Loading -> {
-                LaunchedEffect(Unit) {
-                    launch {viewModel.checkUser()}
-                }
+                viewModel.checkUser()
                 LoadingScreen()
             }
+
             is UserState.Error -> ErrorScreen(
                 message = (userState as UserState.Error).message,
                 tryAgain = {
                     viewModel.changeUserState(UserState.NotLoggedIn)
                 }
             )
+
             is UserState.Success -> {
                 // create 3 seconds delay before moving to the next screen
                 viewModel.changeUserState(UserState.LoggedIn)
             }
+
             UserState.LoggedIn -> {
                 onSuccess()
             }
+
             is UserState.NotLoggedIn -> {
                 AuthContentScreen(
                     auth = inputState.authType,
@@ -65,8 +65,8 @@ fun AuthScreen(
                         when (inputState.authType) {
                             AuthType.LOGIN -> {
                                 viewModel.signIn()
-                                viewModel.clearInput()
                             }
+
                             AuthType.SIGNUP -> {
                                 viewModel.signUp()
                             }
@@ -83,16 +83,16 @@ fun AuthScreen(
 
 
 @Composable
-fun ErrorScreen(
+private fun ErrorScreen(
     message: String,
     tryAgain: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column (
+    Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-    ){
+    ) {
         Text(
             text = message,
             style = MaterialTheme.typography.bodyMedium

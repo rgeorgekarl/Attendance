@@ -3,6 +3,7 @@ package uiwithlogic.nav.util
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Checklist
 import androidx.compose.material.icons.filled.Home
@@ -16,11 +17,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import uiwithlogic.nav.Attendance
-import uiwithlogic.nav.NavDestination
 import utils.getResourceImage
 
 data class NavigationItemContent(
@@ -44,7 +45,7 @@ val list = listOf(
         text = "Attendance"
     ),
     NavigationItemContent(
-        Attendance.Manage,
+        Attendance.Account,
         selected = Icons.Filled.People,
         unselected = Icons.Outlined.People,
         text = "Profile"
@@ -69,9 +70,9 @@ fun NavDrawerContent(
         modifier = modifier
     ) {
         Image(
-            painter = getResourceImage("frame_1", "xml"),
+            painter = getResourceImage("smc", "png"),
             contentDescription = "Logo",
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.size(220.dp).padding(16.dp).align(Alignment.CenterHorizontally)
         )
         for (navItem in navigationItemContentList) {
             NavigationDrawerItem(
@@ -88,7 +89,7 @@ fun NavDrawerContent(
                         contentDescription = navItem.text
                     )
                 },
-                onClick = {onTabPressed(navItem.attendance)}
+                onClick = { onTabPressed(navItem.attendance) }
             )
         }
     }

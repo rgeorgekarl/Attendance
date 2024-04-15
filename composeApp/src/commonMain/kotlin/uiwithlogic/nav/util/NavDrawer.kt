@@ -14,7 +14,7 @@ fun NavDrawer(
 ) {
     ModalNavigationDrawer(
         drawerContent = drawerContent,
-        drawerState = drawerState,  
+        drawerState = drawerState,
         content = content,
         modifier = modifier
     )

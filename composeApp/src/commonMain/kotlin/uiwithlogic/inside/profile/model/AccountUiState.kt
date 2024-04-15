@@ -17,4 +17,5 @@ data class AccountUiState(
     val address: String = "",
     val email: String = "",
     val icon: String = "",
+    val editable: Boolean = true
 )

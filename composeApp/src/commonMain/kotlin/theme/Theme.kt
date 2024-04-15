@@ -1,14 +1,9 @@
 package theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.*
+import org.real.AppDatabase
 import theme.colors.*
-
-
-
 
 val ThemeColor = compositionLocalOf {
     mutableStateOf(1)
@@ -18,11 +13,13 @@ val LocalDark = compositionLocalOf {
 }
 @Composable
 fun AttendanceTheme(
+    appDatabase: AppDatabase,
     content: @Composable() () -> Unit
 ) {
-    val isDark = isSystemInDarkTheme()
-    val darkState = remember { mutableStateOf(isDark) }
-    val themeColor = remember { mutableStateOf(1) }
+    val queries = appDatabase.settingsQueries
+    val settings = queries.getSettings().executeAsOne()
+    val darkState = remember { mutableStateOf(settings.isDarkMode == 1L) }
+    val themeColor = remember { mutableStateOf(settings.theme?.toInt()!!) }
     val themeState = themeColor.value
     CompositionLocalProvider(
         ThemeColor provides themeColor,
@@ -38,9 +35,11 @@ fun AttendanceTheme(
             6 -> if (useDarkTheme) Color6.DarkColors else Color6.LightColors
             7 -> if (useDarkTheme) Color7.DarkColors else Color7.LightColors
             8 -> if (useDarkTheme) Color8.DarkColors else Color8.LightColors
-            else -> if (useDarkTheme) Color9.DarkColors else Color9.LightColors
+            9 -> if (useDarkTheme) Color9.DarkColors else Color9.LightColors
+            10 -> if (useDarkTheme) Color10.DarkColors else Color10.LightColors
+            11 -> if (useDarkTheme) Color11.DarkColors else Color11.LightColors
+            else -> if (useDarkTheme) Color12.DarkColors else Color12.LightColors
         }
-
         MaterialTheme(
             colorScheme = colors,
             content = content

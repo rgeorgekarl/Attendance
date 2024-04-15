@@ -1,19 +1,16 @@
 package uiwithlogic.nav
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.Navigator
 import org.real.AppDatabase
-import uiwithlogic.inside.profile.accountRoute
-import uiwithlogic.inside.profile.repo.AccountRepoImp
-import uiwithlogic.inside.profile.ui.AccountViewModel
 import uiwithlogic.auth.authRoute
 import uiwithlogic.auth.ui.AuthViewModel
-import uiwithlogic.inside.home.homeRoute
 import uiwithlogic.inside.insideRoute
+import uiwithlogic.inside.profile.repo.AccountRepoImp
+import uiwithlogic.inside.profile.ui.AccountViewModel
 import uiwithlogic.inside.settings.ui.SettingsViewModel
 import utils.ScreenType
 
@@ -23,7 +20,7 @@ import utils.ScreenType
 * precompose is used to handle the navigation.
  */
 @Composable
-fun AttendanceNav(
+internal fun AttendanceNav(
     appDatabase: AppDatabase,
     screenType: ScreenType,
     navigator: Navigator,
@@ -57,7 +54,6 @@ fun AttendanceNav(
                 accountViewModel = AccountViewModel(AccountRepoImp(appDatabase)),
                 notLoggedIn = notLoggedIn,
                 settingsViewModel = SettingsViewModel(appDatabase),
-
             )
         }
     }

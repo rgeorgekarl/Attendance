@@ -1,16 +1,12 @@
 package uiwithlogic.inside.profile
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import moe.tlaster.precompose.navigation.RouteBuilder
 import org.real.AppDatabase
-import uiwithlogic.inside.home.homeRoute
-import uiwithlogic.inside.home.ui.HomeScreen
 import uiwithlogic.inside.profile.ui.AccountScreen
 import uiwithlogic.inside.profile.ui.AccountViewModel
-import uiwithlogic.nav.Attendance
 import utils.ScreenType
 
 

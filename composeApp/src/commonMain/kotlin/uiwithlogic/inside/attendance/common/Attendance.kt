@@ -1,4 +1,4 @@
-package uiwithlogic.inside.attendance.ui
+package uiwithlogic.inside.attendance.common
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun AttendanceScreen(){
-    Column(modifier = Modifier.padding(top = 56.dp)
+    Column(modifier = Modifier.padding(top = 60.dp)
     ){
         Text(
             text = "Attendance Screen",

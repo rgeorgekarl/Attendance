@@ -7,7 +7,7 @@ import uiwithlogic.auth.ui.AuthViewModel
 import utils.ScreenType
 
 
-fun RouteBuilder.authRoute(
+internal fun RouteBuilder.authRoute(
     group: String,
     viewModel: AuthViewModel,
     screenType: ScreenType,

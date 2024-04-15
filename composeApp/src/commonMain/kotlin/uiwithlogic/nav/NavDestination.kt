@@ -8,6 +8,6 @@ enum class NavDestination {
 enum class Attendance {
     Home,
     Real,
-    Manage,
+    Account,
     Settings
 }
