@@ -1,0 +1,20 @@
+CREATE TABLE Room (
+roomId INTEGER PRIMARY KEY,
+name Text,
+description Text,
+rommNumber Text,
+createdby TEXT
+);
+
+
+-- replace or insert room
+insertOrReplace:
+INSERT OR REPLACE INTO Room (roomId, name, description, rommNumber, createdby) VALUES (?, ?, ?, ?, ?);
+
+-- get all rooms
+getAllRooms:
+SELECT * FROM Room;
+
+-- get room by id
+getRoomById:
+SELECT * FROM Room WHERE roomId = ?;

@@ -3,6 +3,7 @@ import androidx.compose.runtime.Composable
 import moe.tlaster.precompose.PreComposeApp
 import theme.AttendanceTheme
 import uiwithlogic.AttendanceScreen
+import uiwithlogic.inside.attendance.manage.ui.RealManageScreen
 
 @Composable
 fun App(driverFactory: DriverFactory, windowWidthSizeClass: WindowWidthSizeClass) {
@@ -10,10 +11,9 @@ fun App(driverFactory: DriverFactory, windowWidthSizeClass: WindowWidthSizeClass
     AttendanceTheme(database) {
         PreComposeApp {
             AttendanceScreen(
-                database,
-                windowWidthSizeClass,
-
-                )
+                appDatabase = database,
+                windowSize = windowWidthSizeClass,
+            )
         }
     }
 }

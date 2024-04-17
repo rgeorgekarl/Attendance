@@ -91,8 +91,7 @@ class AccountViewModel(
     }
     private suspend fun fetchAccountDetails() {
         viewModelScope.launch {
-            accountRepo.fetchAccountDetails()
-            val accountDetails = accountRepo.getAccountDetails()
+            val accountDetails= accountRepo.fetchAccountDetails()
             _inputState.value = _inputState.value.copy(
                 id = accountDetails.id,
                 givenId = accountDetails.givenId?.toInt() ?: 0,

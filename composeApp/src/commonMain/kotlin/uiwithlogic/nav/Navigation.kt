@@ -41,7 +41,12 @@ internal fun Nav(
                         PermanentDrawerSheet {
                             NavDrawerContent(
                                 selectedDestination = navState.attendance,
-                                onTabPressed = { navigationViewModel.updateAttendance(it) },
+                                onTabPressed = {
+                                    runBlocking {
+                                        navigationViewModel.updateAttendance(it)
+                                        navigator.navigate(it.name)
+                                    }
+                                },
                                 navigationItemContentList = list,
                                 modifier = Modifier
                             )
@@ -149,4 +154,3 @@ private fun AttendanceScaffold(
         )
     }
 }
-

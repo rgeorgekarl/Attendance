@@ -1,5 +1,6 @@
 package uiwithlogic.nav.util
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -20,6 +21,7 @@ fun CenterTopBar(
     title: String,
     navImageVector: ImageVector,
     navOnClick: () -> Unit,
+    showNav: Boolean = true,
     actImageVector: ImageVector,
     logoutOnClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -41,18 +43,16 @@ fun CenterTopBar(
             )
         },
         navigationIcon = {
+                NavIcon(
+                    imageVector = navImageVector,
+                    contentDescription = "nav",
+                    onClick = navOnClick,
+                    modifier = Modifier.padding(16.dp)
+                )
 
-            NavIcon(
-                imageVector = navImageVector,
-                contentDescription = "nav",
-                onClick = navOnClick,
-                modifier = Modifier.padding(16.dp)
-            )
 
         },
         actions = {
-
-
             NavIcon(
                 imageVector = actImageVector,
                 contentDescription = "Account",
@@ -64,7 +64,6 @@ fun CenterTopBar(
                         itemHeight = with(density) { it.height.toDp() }
                     }
             )
-
             DropdownMenu(
                 expanded = isContextMenuVisible,
                 onDismissRequest = { isContextMenuVisible = false },

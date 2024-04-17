@@ -1,11 +1,13 @@
-package uiwithlogic.inside.attendance.common
+package uiwithlogic.inside.attendance.common.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -16,6 +18,7 @@ import uiwithlogic.inside.attendance.common.model.Room
 @Composable
 fun RoomListScreen(
     roomList: List<Room>,
+    click: (Room) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     if (roomList.isEmpty()) {
@@ -25,7 +28,8 @@ fun RoomListScreen(
             modifier = modifier
         ) {
             Text(
-                text = "No room exist"
+                text = "No room exist",
+                style = MaterialTheme.typography.displayMedium
             )
         }
     } else {
@@ -38,6 +42,8 @@ fun RoomListScreen(
                     roomDescription = roomList[index].description,
                     roomNumber = roomList[index].roomNumber,
                     modifier = Modifier
+                        .clickable {click(roomList[index])  }
+                        .padding(2.dp)
                 )
             }
         }
@@ -52,7 +58,11 @@ private fun RoomItemCard(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier
+        modifier = modifier,
+        colors = CardDefaults.cardColors(
+            containerColor =MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        )
     ) {
         Row(
             modifier = Modifier.fillMaxWidth()

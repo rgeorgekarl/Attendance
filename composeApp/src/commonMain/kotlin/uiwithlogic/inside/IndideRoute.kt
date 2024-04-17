@@ -36,6 +36,11 @@ fun RouteBuilder.insideRoute(
         )
         homeRoute(group = Attendance.Home.name)
         settingRoute(group = Attendance.Settings.name, settingsViewModel = settingsViewModel)
-        attendanceRoute(group = Attendance.Real.name)
+        attendanceRoute(
+            group = Attendance.Real.name,
+            appDatabase = appDatabase,
+            navigator = navigator,
+            screenType = screenType,
+        )
     }
 }

@@ -9,8 +9,7 @@ import uiwithlogic.inside.profile.model.AccountDetailSer
 import uiwithlogic.inside.profile.toAccountDetailSer
 
 interface AccountRepository {
-    suspend fun fetchAccountDetails()
-    fun getAccountDetails(): AccountDetailSer
+    suspend fun fetchAccountDetails(): AccountDetailSer
     suspend fun upsert(accountDetails: AccountDetailSer)
 }
 
@@ -19,13 +18,9 @@ class AccountRepoImp(
 ) : AccountRepository {
     private val queries = database.accountDetailsQueries
 
-    override suspend fun fetchAccountDetails() {
-        val accountDetails = client.from("accountDetails")
+    override suspend fun fetchAccountDetails()= client.from("accountDetails")
             .select().decodeSingle<AccountDetailSer>()
-        queryUpsert(accountDetails)
-    }
 
-    override fun getAccountDetails(): AccountDetailSer = queries.getAccountDetails().executeAsOne().toAccountDetailSer()
 
     override suspend fun upsert(accountDetails: AccountDetailSer) {
         client.from("accountDetails")
