@@ -1,27 +1,17 @@
 package uiwithlogic.inside.attendance.manage.ui
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import datasource.Supabase.client
-import io.github.jan.supabase.postgrest.from
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import moe.tlaster.precompose.viewmodel.viewModel
 import org.real.AppDatabase
 import uiwithlogic.inside.attendance.common.ui.BottomRealBar
-import uiwithlogic.inside.attendance.common.ui.RoomListScreen
-import uiwithlogic.inside.attendance.common.model.Room
 import uiwithlogic.inside.attendance.common.ui.RoomDialog
+import uiwithlogic.inside.attendance.common.ui.RoomListScreen
 import uiwithlogic.inside.attendance.manage.repo.ManageRepoImpl
-import uiwithlogic.nav.util.list
 import utils.ScreenType
 
 

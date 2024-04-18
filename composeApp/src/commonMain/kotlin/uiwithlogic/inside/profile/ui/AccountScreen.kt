@@ -54,7 +54,6 @@ internal fun AccountScreen(
                     accountViewModel.changeUserState(UserState.LoggedIn)
                 }
                 LoadingScreen(modifier = modifier)
-
             }
 
             is UserState.LoggedIn -> {
