@@ -28,7 +28,7 @@ internal fun AuthContentScreen(
     onPasswordChange: (String) -> Unit,
     authButton: () -> Unit,
     onAuthTypeChange: () -> Unit,
-    modifier: Modifier = Modifier,
+        modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = modifier,
@@ -117,7 +117,7 @@ private fun AuthTypeRow(
     ) {
         Text(
             text = auth.name,
-            style = firstTextStyle
+            style = firstTextStyle,
         )
         Text(
             text = if (auth.name == "LOGIN") AuthType.SIGNUP.name else AuthType.LOGIN.name,

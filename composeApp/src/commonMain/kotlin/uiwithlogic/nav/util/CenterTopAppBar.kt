@@ -49,8 +49,6 @@ fun CenterTopBar(
                     onClick = navOnClick,
                     modifier = Modifier.padding(16.dp)
                 )
-
-
         },
         actions = {
             NavIcon(
